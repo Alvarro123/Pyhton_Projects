@@ -12,5 +12,20 @@ y = prod_year["value_of_production"]
 plt.plot(X,y)
 plt.xlabel("Years")
 plt.ylabel("Honey Mean Volume")
+#plt.show()
+X = np.array(X)
+X = np.reshape(X,(-1,1))
+regr = linear_model.LinearRegression()
+regr.fit(X,y)
+y_predicted = regr.predict(X)
+plt.plot(X,y_predicted)
+#plt.show()
+X_predicted = np.array(range(2022,2051))
+X_predicted = np.reshape(X_predicted,(-1,1))
+y_predicted = regr.predict(X_predicted)
+plt.plot(X_predicted,y_predicted)
 plt.show()
+
+
+
 

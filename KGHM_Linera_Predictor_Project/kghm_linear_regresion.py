@@ -104,7 +104,8 @@ class Stock:
         test_score = mlr.score(X_test,y_test)
         coefficients = sorted(list(zip(features,mlr.coef_)),key = lambda x: abs(x[1]),reverse=True)
         return print("\n","Train Score: ",train_score,"\n", "Test Score: ", test_score,"\n","Coefficients: ", coefficients,"\n", "Test_size: ",test_size,"\n", "Random State: ", desired_random)
-    
+#zaczac od redukcji wspolczynnikow
+#potem predict    
     
 
         

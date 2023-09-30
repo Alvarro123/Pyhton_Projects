@@ -120,5 +120,3 @@ test.get_list_of_files_from_stooq(url_1)
 test.import_files_from_stooq()
 test.clean_stooq_dataset()
 test.train_algorithm("kgh price")
-
-

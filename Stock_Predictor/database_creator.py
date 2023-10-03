@@ -1,5 +1,5 @@
 import pandas as pd
-symbols_and_names = pd.read_excel("symbols_names_test.xlsx")
+symbols_and_names = pd.read_excel("symbols_names.xlsx")
 symb = symbols_and_names["Symbols"].to_list()
 nm = symbols_and_names["Names"].to_list()
 symbols = []
@@ -12,11 +12,11 @@ for i in range(len(symbols)):
     historic_data_links.append(string)
 limiter = len(historic_data_links)
 list_of_dataframes = []
-for i in range(len(historic_data_links)):
-    df = pd.read_csv(historic_data_links[i])
-    df = df.loc[["Data", "Zamknięcie"]]
-    df = df.rename(columns = {"Zamknięcie" : symb[i]})
-    list_of_dataframes.append(df)
+#for i in range(len(historic_data_links)):
+    #df = pd.read_csv(historic_data_links[i])
+    #df = df.loc[["Data", "Zamknięcie"]]
+    #df = df.rename(columns = {"Zamknięcie" : symb[i]})
+    #list_of_dataframes.append(df)
 
 while limiter >0:
     for i in range(len(historic_data_links)):

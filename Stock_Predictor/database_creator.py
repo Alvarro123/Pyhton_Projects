@@ -1,5 +1,5 @@
 import pandas as pd
-symbols_and_names = pd.read_excel("symbols_names.xlsx")
+symbols_and_names = pd.read_excel("symbols_names_151_k.xlsx")
 symb = symbols_and_names["Symbols"].to_list()
 nm = symbols_and_names["Names"].to_list()
 symbols = []
@@ -49,11 +49,11 @@ df_time = pd.DataFrame(date_dic)
 #merging with dataset
 df = pd.merge(left = df, right = df_time, left_on = "Data", right_on = "Data", how = "left")
 #cleaning the dataset
-for col in df.columns:
-    condition = (df[col].isna() == False)
-    df[col] = df[col][condition]
-    if df[col].dtype != "float64":
-        df.drop(columns = col, inplace=True)
+#for col in df.columns:
+    #condition = (df[col].isna() == False)
+    #df[col] = df[col][condition]
+    #if df[col].dtype != "float64":
+        #df.drop(columns = col, inplace=True)
 keys = []
 values = []
 for col in df.columns:
@@ -62,7 +62,7 @@ for col in df.columns:
 nan_dic = {k:v for k,v in zip(keys,values)}
 df.fillna(nan_dic,inplace=True)
 database = df
-filepath = "/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/database.csv"
+filepath = "/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/database/database_k.csv"
 database.to_csv(path_or_buf=filepath, mode = "x")
 
 

@@ -38,8 +38,9 @@ df.fillna(dict_nan, inplace=True)
 print(len(df.columns))
 print(df.isna().sum())
 print(df.info())
-filepath = "/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/database/TOTAL_DATABASE.csv"
-df.to_csv(path_or_buf=filepath, mode = "x")
+# Zaczac od checkera czy sie nie powtarzają !!! i czy są zgodne z tabelka w excelu !!!
+#filepath = "/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/database/TOTAL_DATABASE.csv"
+#df.to_csv(path_or_buf=filepath, mode = "x")
 
 
 

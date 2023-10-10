@@ -1,28 +1,19 @@
+# EXCEL EXPORT WORKS AND CURRENTLY SELECTED CURRENCY PAIRS AS A VALUES
 import pandas as pd
 import numpy as np
-from datetime import date, timedelta
-import statistics
+from datetime import date
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 # importing the desired coefficients
 coefficients = pd.read_csv("/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/best_coeff.csv")
+#YOU ONLY NEED TO CHANGE THESE y_values FOR WIG 20 NAMES AND IT WILL PREDICT WIG 20
 y_values = ["EUR/PLN", "CHF/PLN", "USD/PLN", "GBP/PLN"]
 #importing_the_training_data
 total_database = pd.read_csv("/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/database/TOTAL_DATABASE.csv")
-features = [i + " price" for i in coefficients["Symbols"].to_list()] + ['Date_index']
+features = [i + " price" for i in coefficients["Symbols"].to_list()]
 values = [i + " price" for i in y_values]
 x_data = total_database[features]
 y_data = total_database[[i + " price" for i in y_values]]
-#establishing DATA TIME
-#calculating_date_index_3_months_ahead
-data = str(date.today())
-data = data.split("-")
-year = float(data[0]) * 365
-month = float(data[1]) * 30
-day = float(data[2])
-date_index =  year + month + day
-#HERE YOU INPUT THE TIME INTERVAL IN DAYS
-exp_date_index = float(date_index + 1)
 #imprting feature data:
 current_features = [i.replace("/", "").lower() for i in coefficients["Symbols"].to_list()]
 predict_data = []
@@ -31,9 +22,6 @@ for curr in current_features:
     df = pd.read_csv(string)
     dt = df["Zamkniecie"].iloc[0]
     predict_data.append(dt)
-exp_date = date.today() + timedelta(days=30)
-exp_date = str(exp_date)
-predict_data.append(exp_date_index)
 df_dic = {k:v for k,v in zip(features,predict_data)}
 df_t = pd.DataFrame(df_dic, index=[0])
 #print(df_t)
@@ -72,25 +60,41 @@ for val in values:
     #predicting the value
     predicted_values.append(np.array(model.predict(df_t))[0])
 #print(real_values, predicted_values, scores)
+#IMPORTANT 
+#CHANGE DAYS ACCORDINGLY
 today = str(date.today())
-future = str(date.today() + timedelta(days=30))
 key_1 = "Current Price {DATA}".format(DATA = today)
-key_2 = "Predicted Price for {FUTURE}".format(FUTURE = future)
+key_2 = "Estimated Price"
 key_3 = "Difference"
-key_4 = "Model Score"
+key_4 = "Trend"
+key_5 = "Model Score"
 index = ["EUR/PLN", "CHF/PLN", "USD/PLN", "GBP/PLN"]
 dif = []
 for i in range(len(real_values)):
-    dif.append(round(real_values[i] - predicted_values[i],2))
-key_s = [key_1,key_2,key_3,key_4]
-vvalue_s = [real_values, predicted_values, dif, scores]
+    dif.append(round(predicted_values[i] - real_values[i],2))
+labels = []
+for r in range(len(real_values)):
+    if real_values[r] > predicted_values[r]:
+        label = "Loss"
+        labels.append(label)
+    elif real_values[r] < predicted_values[r]:
+        label = "Gain"
+        labels.append(label)
+    else:
+        labels.append("Remain")
+
+
+real_values = [round(f,2) for f in real_values]
+predicted_values = [round(g,2) for g in predicted_values]
+scores = [round(q,2) for q in scores]
+
+key_s = [key_1,key_2,key_3,key_4, key_5]
+vvalue_s = [real_values, predicted_values, dif, labels, scores]
 df_dic = {ke:vv for ke, vv in zip(key_s,vvalue_s)}
 final_df = pd.DataFrame(df_dic, index = index)
 excel_path = "/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/RESULTS.xlsx"
-final_df.to_excel(excel_writer=excel_path)
+#final_df.to_excel(excel_writer=excel_path)
 
-
-#final_df = pd.DataFrame(data, columns = ["Current Price", "Predicted Price", "Difference", "Model Score"], index = values)
 print(final_df)
 
 

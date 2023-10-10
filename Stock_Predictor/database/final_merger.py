@@ -35,9 +35,12 @@ for col in df.columns:
     values.append(0)
 dict_nan = {k:v for k, v in zip(keys, values)}
 df.fillna(dict_nan, inplace=True)
+col_list = [col for col in df.columns if "_x" in col or "_y" in col]
+df.drop(columns=col_list, inplace=True)
 print(len(df.columns))
 print(df.isna().sum())
 print(df.info())
+
 filepath = "/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/database/TOTAL_DATABASE.csv"
 df.to_csv(path_or_buf=filepath, mode = "x")
 

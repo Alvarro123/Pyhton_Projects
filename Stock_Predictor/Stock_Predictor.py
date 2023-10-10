@@ -15,7 +15,7 @@ class Stooq:
         columns = [col.rstrip(" price") for col in Stooq.database.columns]
         Stooq.database.columns = columns
         #model development
-        values = ["ASSECOPOL","ALLEGRO","ALIOR","CDPROJEKT","CYFRPLSAT","DINOPL","JSW","KGHM","KRUK","KETY","LPP","MBANK","ORANGEPL","PEPCO","PEKAO","PGE","PKNORLEN","PKOBP","PZU","SANPL"]
+        values = ["EUR/PLN", "CHF/PLN", "USD/PLN", "GBP/PLN"]
         features = []
         for col in Stooq.database.columns:
             if col in values:
@@ -109,7 +109,7 @@ class Stooq:
         result_dic = {k:v for k, v in zip(keys, lst_of_results)}
         import json
         dict = result_dic
-        with open("wig20_performance_data","w") as outfile:
+        with open("/Users/test/Desktop/Pyhton_Projects/Stock_Predictor/currencies_performance_data.json","x") as outfile:
             json.dump(dict, outfile)
         
 

@@ -1,4 +1,8 @@
 import pandas as pd
+from sklearn.preprocessing import scale
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
 all_tweets = pd.read_json("random_tweets.json", lines=True)
 #print(len(all_tweets))
 
@@ -24,8 +28,26 @@ for i in range(len(lst_users)):
 dt_dic_2 = {"friends_count":friends_count}
 dt_pd_2 = pd.DataFrame(dt_dic_2, index = index)
 all_tweets["friends_count"] = dt_pd_2["friends_count"]
-#ZACZĄĆ OD TYCH 3 CUSTOMOWYCH FEATEROW!!
-
-print(all_tweets["friends_count"].head())
-#print(lst_users[0]["followers_count"])
-#all_tweets["followers_count"] = all_tweets["user"]["followers_count"].apply(lambda count: count)
+all_tweets["word_list"] = all_tweets["text"].apply(lambda tweet: tweet.split(" "))
+all_tweets["word_count_in_tweet"] = all_tweets["word_list"].apply(lambda lst: len(lst))
+# our features are: folowers_count, friends_count, worud_count_in_tweet
+# now let's normalize the data
+labels = all_tweets["is_viral"]
+data = all_tweets[["followers_count", "friends_count", "word_count_in_tweet","tweet_length"]]
+scaled_data = scale(data,axis=0)
+train_data, test_data, train_labels, test_labels = train_test_split(scaled_data, labels, test_size=0.2, random_state=1)
+classifier = KNeighborsClassifier(n_neighbors=5)
+classifier.fit(train_data,train_labels)
+score = classifier.score(test_data, test_labels)
+scores = []
+for k in range(1,201):
+    classifier = KNeighborsClassifier(n_neighbors=k)
+    classifier.fit(train_data,train_labels)
+    scores.append(classifier.score(test_data,test_labels))
+desired_k = scores.index(max(scores))
+print(desired_k)
+x_values = [i for i in range(1,201)]
+plt.xlabel("K value")
+plt.ylabel("Score")
+plt.scatter(x_values,scores, alpha = 0.4)
+plt.show()
